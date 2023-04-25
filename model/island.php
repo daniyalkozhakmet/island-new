@@ -42,7 +42,12 @@ class Island extends Dbh
     {
         $statement = $this->connect()->prepare('SELECT * from island ORDER BY id DESC LIMIT 1;');
         $statement->execute();
-        $data = $statement->fetch();
-        return $data;
+        if ($statement->rowCount() > 0) {
+            $data = $statement->fetch();
+            return $data;
+        } else {
+
+            return false;
+        }
     }
 }

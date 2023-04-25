@@ -22,16 +22,22 @@ if (isset($_POST)) {
     $id = $my_data['id'];
     $island = new IslandContrWithoutConst(intval($id));
     $prev_island = $island->getPreviousIsland();
-
-    $response = [
-      "data" => $prev_island,
-      "message" => "Retrieved successfully",
-    ];
-    print_r(json_encode($response));
+    if (is_bool($prev_island)) {
+      $response = [
+        "error" => "No data to show",
+      ];
+      print_r(json_encode($response));
+    } else {
+      $response = [
+        "data" => $prev_island,
+        "message" => "Retrieved successfully",
+      ];
+      print_r(json_encode($response));
+    }
   } else {
     $response = [
       "error" => 'Fill in all fields'
     ];
-    echo $response;
+    print_r($response);
   }
 }

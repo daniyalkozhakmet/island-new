@@ -53,6 +53,7 @@ tiles.forEach((tile, index) => {
 //To reset
 function resetBoard() {
   resultShow.innerText = "";
+  idHolder.innerText = "";
   tiles.forEach((tile) => {
     tile.innerText = "O";
     tile.classList.remove("open");
@@ -181,14 +182,20 @@ historyButton.addEventListener("click", () => {
   xhr.onreadystatechange = function () {
     if (xhr.readyState == XMLHttpRequest.DONE) {
       const response = JSON.parse(xhr.response);
-      idHolder.innerText = response.data.id;
-      console.log(JSON.parse(response.data.island_arr));
-      setPreviousIslandArr(JSON.parse(response.data.island_arr));
-      resultShow.innerText = JSON.parse(response.data.island_sum);
+      if (response.error) {
+        showAlert(response.error);
+        idHolder.innerText = "";
+        resultShow.innerText = "";
+      } else {
+        idHolder.innerText = response.data.id;
+
+        setPreviousIslandArr(JSON.parse(response.data.island_arr));
+        resultShow.innerText = JSON.parse(response.data.island_sum);
+      }
     }
   };
 
   // send the data
-  console.log(JSON.stringify({ id: Number(data) }));
+
   xhr.send(JSON.stringify({ id: Number(data) }));
 });
